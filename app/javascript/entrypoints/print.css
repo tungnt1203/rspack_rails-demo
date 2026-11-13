@@ -1,0 +1,12 @@
+/* A stylesheet-only entry point: builds print.bundle.css and no print.js.
+   Linked with rspack_stylesheet_tag "print", media: "print". */
+nav,
+button,
+.no-print {
+  display: none !important;
+}
+
+body {
+  background: white !important;
+  color: black !important;
+}

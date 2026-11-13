@@ -1,0 +1,29 @@
+<h1 class="text-3xl font-bold tracking-tight">Admin entry point</h1>
+<p class="mt-2 text-slate-400">
+  This page uses <code>layouts/admin.html.erb</code>, which loads <code>admin.js</code> built from
+  <code>app/javascript/entrypoints/admin.ts</code> instead of <code>application.js</code>.
+</p>
+
+<h2 class="mt-8 text-lg font-semibold">Entry points in this app</h2>
+<table class="mt-3 w-full text-left text-sm">
+  <thead class="text-slate-400">
+    <tr><th class="py-2">Bundle</th><th class="py-2">Built from</th></tr>
+  </thead>
+  <tbody class="divide-y divide-slate-700 font-mono">
+    <% @entries.each do |name, paths| %>
+      <tr>
+        <td class="py-2"><%= name %></td>
+        <td class="py-2"><%= paths.join(", ") %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="mt-8 rounded-xl border border-slate-700 p-6" data-controller="counter" data-counter-count-value="0">
+  <p class="text-sm text-slate-400">Stimulus controllers work here too: admin.ts imports the same autoloader.</p>
+  <div class="mt-3 flex items-center gap-3">
+    <button data-action="counter#increment"
+            class="rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-900">Click me</button>
+    <span data-counter-target="output" class="font-mono">0 clicks</span>
+  </div>
+</div>

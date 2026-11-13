@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 6 * * 1" # weekly, to catch breakage from new gem or npm releases
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Type-check
+        run: npm run typecheck
+      - name: Doctor
+        run: bin/rails rspack:doctor
+      - name: Precompile for production
+        run: bin/rails assets:precompile
+        env:
+          RAILS_ENV: production
+          SECRET_KEY_BASE_DUMMY: "1"
+      - name: Pages render in production
+        env:
+          RAILS_ENV: production
+          SECRET_KEY_BASE_DUMMY: "1"
+        run: |
+          bin/rails runner '
+            %w[/ /admin].each do |path|
+              status, _, body = Rails.application.call(Rack::MockRequest.env_for(path, "HTTP_HOST" => "localhost"))
+              html = body.each.to_a.join
+              abort "#{path}: #{status}" unless status == 200 && html.match?(%r{/assets/(application|admin)-\h+\.js})
+              puts "#{path}: #{status}"
+            end'

@@ -1,1 +1,6 @@
 @import "tailwindcss";
+
+/* A small SVG referenced from CSS: under 8 KB, so rspack inlines it as a data URI. */
+.bg-dots {
+  background-image: url("./images/dots.svg");
+}

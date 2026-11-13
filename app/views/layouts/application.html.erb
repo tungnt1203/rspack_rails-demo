@@ -18,13 +18,16 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app %>
+    <%# Not `stylesheet_link_tag :app`: that links every CSS file under app/assets,
+        including rspack's app/assets/builds/*.bundle.css (print.bundle.css without media="print"). %>
+    <%= stylesheet_link_tag "application" %>
     <%= rspack_javascript_tag "application", "data-turbo-track": "reload" %>
     <%= rspack_stylesheet_tag "application", "data-turbo-track": "reload" %>
+    <%= rspack_stylesheet_tag "print", media: "print" %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="bg-dots min-h-screen bg-slate-50 text-slate-800 antialiased">
+    <%= render "shared/nav" %>
+    <main class="mx-auto max-w-3xl px-4 py-10"><%= yield %></main>
   </body>
 </html>

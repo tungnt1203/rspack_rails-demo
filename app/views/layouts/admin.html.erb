@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin · Rspack Rails Demo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%# A separate bundle: app/javascript/entrypoints/admin.ts %>
+    <%= rspack_javascript_tag "admin", "data-turbo-track": "reload" %>
+    <%= rspack_stylesheet_tag "admin", "data-turbo-track": "reload" %>
+  </head>
+
+  <body class="min-h-screen bg-slate-900 text-slate-100 antialiased">
+    <%= render "shared/nav" %>
+    <main class="mx-auto max-w-3xl px-4 py-10"><%= yield %></main>
+  </body>
+</html>
