@@ -1,0 +1,14 @@
+{
+  "name": "app",
+  "private": true,
+  "scripts": {
+    "build": "rspack build",
+    "build:watch": "rspack build --watch",
+    "dev": "rspack serve"
+  },
+  "devDependencies": {
+    "@rspack/cli": "^2.3.2",
+    "@rspack/core": "^2.3.2",
+    "@rspack/dev-server": "^2.2.2"
+  }
+}

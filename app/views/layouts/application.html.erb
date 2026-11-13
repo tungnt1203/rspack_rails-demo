@@ -20,6 +20,7 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app %>
+    <%= rspack_javascript_tag "application", "data-turbo-track": "reload" %>
   </head>
 
   <body>
