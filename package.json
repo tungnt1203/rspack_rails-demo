@@ -10,5 +10,8 @@
     "@rspack/cli": "^2.3.2",
     "@rspack/core": "^2.3.2",
     "@rspack/dev-server": "^2.2.2"
+  },
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.2"
   }
 }
