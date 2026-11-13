@@ -11,6 +11,8 @@
     "@rspack/cli": "^2.3.2",
     "@rspack/core": "^2.3.2",
     "@rspack/dev-server": "^2.2.2",
+    "@tailwindcss/webpack": "^4.3.5",
+    "tailwindcss": "^4.3.5",
     "ts-checker-rspack-plugin": "^1.8.0",
     "typescript": "^7.0.2"
   },
