@@ -4,12 +4,15 @@
   "scripts": {
     "build": "rspack build",
     "build:watch": "rspack build --watch",
-    "dev": "rspack serve"
+    "dev": "rspack serve",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@rspack/cli": "^2.3.2",
     "@rspack/core": "^2.3.2",
-    "@rspack/dev-server": "^2.2.2"
+    "@rspack/dev-server": "^2.2.2",
+    "ts-checker-rspack-plugin": "^1.8.0",
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "@hotwired/stimulus": "^3.2.2"
