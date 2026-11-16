@@ -23,7 +23,7 @@ Open http://localhost:3000.
 With `bin/dev` running and the page open:
 
 1. Click **Click me** a few times, then edit `app/javascript/controllers/counter_controller.ts` (change `"click"` to `"tap"`). The label updates and the count stays, because the page does not reload.
-2. Add `bg-amber-100` to a card in `app/views/pages/home.html.erb`. Tailwind generates the class and the dev server applies the new CSS.
+2. Add `bg-amber-100` to a card in `app/views/pages/home.html.erb`. Views are rendered by Rails, so the page reloads by itself, with Tailwind's new class already built.
 3. Edit `app/javascript/application.css`. The change shows up without a reload.
 4. Click **Load primes.ts** with the network tab open: the chunk is fetched only then.
 
