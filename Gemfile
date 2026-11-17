@@ -21,4 +21,4 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 end
 
-gem "rspack_rails", "~> 0.10"
+gem "rspack_rails", "~> 0.18"
