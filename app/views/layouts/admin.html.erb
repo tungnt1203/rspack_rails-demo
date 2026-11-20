@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin · rspack_rails demo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+
+    <%# A second entry: app/javascript/entrypoints/admin.ts and admin.css. No React, Stimulus, Turbo or Leaflet here. %>
+    <%= rspack_stylesheet_tag "admin", "data-turbo-track": "reload" %>
+    <%= rspack_javascript_tag "admin", "data-turbo-track": "reload" %>
+  </head>
+
+  <body class="min-h-screen bg-zinc-950 text-zinc-100 antialiased">
+    <header class="border-b border-zinc-800">
+      <nav class="mx-auto flex max-w-4xl items-center justify-between px-4 py-4">
+        <span class="font-semibold">rspack_rails demo <span class="ml-1 rounded bg-orange-500/20 px-1.5 py-0.5 text-xs text-orange-400">admin</span></span>
+        <%= link_to "← Back to the demo", root_path, class: "text-sm text-zinc-400 hover:text-orange-400" %>
+      </nav>
+    </header>
+    <main class="mx-auto max-w-4xl px-4 py-10">
+      <%= yield %>
+    </main>
+  </body>
+</html>

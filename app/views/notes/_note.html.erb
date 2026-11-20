@@ -1,0 +1,8 @@
+<li id="<%= dom_id(note) %>" class="flex items-center justify-between gap-3 px-3 py-2 text-sm animate-[note-in_.4s_ease-out]">
+  <span class="min-w-0 truncate">
+    <%= note.body %>
+    <span class="ml-2 text-xs text-slate-400"><%= note.created_at.strftime("%H:%M:%S") %></span>
+  </span>
+  <%= button_to "Delete", note_path(note), method: :delete,
+        class: "text-xs text-slate-400 hover:text-red-500", form: { class: "shrink-0" } %>
+</li>

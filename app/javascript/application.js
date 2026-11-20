@@ -1,5 +1,7 @@
 import "@fontsource-variable/inter"
+import "@fontsource-variable/jetbrains-mono"
 import "./application.css"
+import "./application.scss"
 import "@hotwired/turbo-rails"
 import "./controllers/autoload"
 import "./components/mount"

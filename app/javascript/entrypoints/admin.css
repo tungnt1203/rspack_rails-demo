@@ -1,0 +1,12 @@
+/* The "admin" entry's stylesheet: admin.ts and admin.css side by side make one
+   entry. Tailwind generates only the classes this app uses. */
+@import "tailwindcss";
+
+@source not "../../../tmp";
+@source not "../../../log";
+@source not "../../../storage";
+@source not "../../assets/builds";
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+}

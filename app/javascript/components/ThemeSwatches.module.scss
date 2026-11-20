@@ -1,0 +1,36 @@
+// A CSS module written in Sass: the class names below are renamed per file,
+// so .swatch here never clashes with a .swatch anywhere else.
+@use "sass:color";
+@use "sass:math";
+
+$base: #f97316;
+$steps: 6;
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat($steps, 1fr);
+  gap: 0.5rem;
+}
+
+.swatch {
+  aspect-ratio: 1;
+  border-radius: 0.75rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &.selected {
+    border-color: #0f172a;
+  }
+}
+
+// .shade-1 … .shade-6, generated at build time.
+@for $i from 1 through $steps {
+  .shade-#{$i} {
+    background: color.adjust($base, $lightness: 30% - math.div(50%, $steps) * $i);
+  }
+}

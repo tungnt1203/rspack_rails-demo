@@ -7,8 +7,13 @@ export default class extends Controller<HTMLElement> {
   static values = { places: Array }
   declare readonly placesValue: [string, number, number][]
   private map?: LeafletMap
+  // Bumped on every connect and disconnect: a connect still waiting for its
+  // chunks gives up when another one (after a hot update re-registers the
+  // controller) has started since.
+  private generation = 0
 
   async connect(): Promise<void> {
+    const generation = ++this.generation
     const [{ default: L }, iconUrl, iconRetinaUrl, shadowUrl] = await Promise.all([
       import(/* webpackChunkName: "leaflet" */ "leaflet"),
       // Leaflet guesses its marker image URLs from its CSS, which a bundler
@@ -18,7 +23,7 @@ export default class extends Controller<HTMLElement> {
       import("leaflet/dist/images/marker-shadow.png").then((m) => m.default),
       import(/* webpackChunkName: "leaflet" */ "leaflet/dist/leaflet.css"),
     ])
-    if (!this.element.isConnected) return
+    if (generation !== this.generation || !this.element.isConnected) return
 
     // A string imagePath stops Leaflet from guessing; the URLs are complete.
     L.Icon.Default.imagePath = ""
@@ -34,6 +39,8 @@ export default class extends Controller<HTMLElement> {
   }
 
   disconnect(): void {
+    this.generation++
     this.map?.remove()
+    this.map = undefined
   }
 }

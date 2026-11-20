@@ -1,0 +1,2 @@
+<%= turbo_stream.prepend "notes", @note %>
+<%= turbo_stream.replace "note_form", partial: "notes/form", locals: { note: Note.new } %>

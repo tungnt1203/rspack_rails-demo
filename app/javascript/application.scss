@@ -1,0 +1,7 @@
+// Sass entry, imported from application.js. Partials in
+// app/assets/stylesheets can be loaded with @use "name".
+$accent: #f97316;
+
+body {
+  accent-color: $accent;
+}

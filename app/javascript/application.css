@@ -7,7 +7,19 @@
 @source not "../../storage";
 @source not "../assets/builds";
 
-/* Inter, from @fontsource-variable/inter (imported in application.js). */
+/* Inter and JetBrains Mono, from @fontsource-variable (imported in
+   application.js). Their CSS points at .woff2 files with url(), which rspack
+   emits as fingerprinted files next to the bundle. */
 @theme {
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+}
+
+/* An image referenced from CSS: grid.svg is under 8 KB, so rspack inlines it. */
+.bg-grid {
+  background-image: url("./images/grid.svg");
+}
+
+@keyframes note-in {
+  from { opacity: 0; transform: translateY(-4px); background: #fff7ed; }
 }
