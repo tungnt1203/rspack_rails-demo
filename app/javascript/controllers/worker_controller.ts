@@ -74,7 +74,7 @@ export default class extends Controller<HTMLElement> {
         return `<rect x="${i * width + width * 0.1}" y="${100 - height}" width="${width * 0.8}" height="${height}" rx="0.4" />`
       })
       .join("")
-    this.chartTarget.innerHTML = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" class="h-32 w-full fill-orange-500">${bars}</svg>`
+    this.chartTarget.innerHTML = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${bars}</svg>`
     this.statusTarget.textContent =
       `${kept.toLocaleString()} of ${total.toLocaleString()} samples kept · ${Math.round(ms)} ms on the ${where}`
   }

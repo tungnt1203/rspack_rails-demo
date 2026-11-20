@@ -1,9 +1,9 @@
 // A CSS module written in Sass: the class names below are renamed per file,
 // so .swatch here never clashes with a .swatch anywhere else.
-@use "sass:color";
 @use "sass:math";
 
-$base: #f97316;
+// The theme's accent, shaded by relative colour: Sass writes one class per step.
+$base: var(--color-accent);
 $steps: 6;
 
 .grid {
@@ -24,13 +24,13 @@ $steps: 6;
   }
 
   &.selected {
-    border-color: #0f172a;
+    border-color: var(--color-ink);
   }
 }
 
 // .shade-1 … .shade-6, generated at build time.
 @for $i from 1 through $steps {
   .shade-#{$i} {
-    background: color.adjust($base, $lightness: 30% - math.div(50%, $steps) * $i);
+    background: oklch(from #{$base} calc(l + #{0.3 - math.div(0.5, $steps) * $i}) c h);
   }
 }

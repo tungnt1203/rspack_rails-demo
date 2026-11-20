@@ -1,9 +1,12 @@
-<%= form_with model: note, id: "note_form", class: "flex gap-2" do |form| %>
+<%= form_with model: note, id: "note_form", class: "note-form" do |form| %>
+  <%= form.label :body, "Note", class: "visually-hidden" %>
   <%= form.text_field :body, placeholder: "Write a note, then open this page in a second tab",
         maxlength: 80, autocomplete: "off", required: true,
-        class: "flex-1 rounded-lg border px-3 py-2 text-sm focus:border-orange-500 focus:outline-none #{note.errors.any? ? "border-red-400" : "border-slate-300"}" %>
-  <%= form.submit "Post", class: "rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600" %>
+        "aria-invalid": (note.errors.any? ? "true" : nil),
+        "aria-describedby": (note.errors.any? ? "note_help" : nil),
+        class: "input" %>
+  <%= form.submit "Post", class: "key key--primary" %>
 <% end %>
 <% if note.errors.any? %>
-  <p class="mt-1 text-xs text-red-500"><%= note.errors.full_messages.to_sentence %></p>
+  <p class="help" id="note_help"><%= note.errors.full_messages.to_sentence %></p>
 <% end %>

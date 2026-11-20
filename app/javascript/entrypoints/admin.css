@@ -1,12 +1,70 @@
+/* Hallmark · shape: app screen · genre: modern-minimal · theme: Cobalt (deal 3/3, seed ruby-gem-bundles-rails-ac03·16ee12a2·2026-11-20·r0, shared with the gem's site) · redesign: full
+ * nav: a top bar, the wordmark and the way back · imagery: none · signature: the two bundles side by side, the admin entry's own weight against the home page's
+ * axes: light/grotesk-sans/cool · posture: restrained · contrast: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S5 R5 V3 · weakest: V, a tool screen in the shared theme; the bundle ledger is the screen's one object */
+/* Hallmark · reworded "← Back to the demo" to "Back to the demo" · 63 names an arrow glued to link text */
 /* The "admin" entry's stylesheet: admin.ts and admin.css side by side make one
    entry. Tailwind generates only the classes this app uses. */
 @import "tailwindcss";
+@import "../tokens.css";
+@import "../base.css" layer(base);
 
 @source not "../../../tmp";
 @source not "../../../log";
 @source not "../../../storage";
 @source not "../../assets/builds";
 
-@theme {
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+@layer components {
+  .bar { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: var(--color-paper); border-bottom: var(--rule-hair) solid var(--color-rule); }
+  .bar__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-md); min-height: 56px; padding-block: var(--space-xs); }
+  .bar__name { display: inline-flex; align-items: center; gap: var(--space-xs); font: 600 var(--text-md)/1 var(--font-display); color: var(--color-ink); white-space: nowrap; }
+  .tag { padding: var(--space-3xs) var(--space-xs); border: var(--rule-hair) solid var(--color-accent); border-radius: 4px; background: var(--color-accent-wash); font: 500 var(--text-sm)/1.2 var(--font-display); color: var(--color-accent-deep); }
+  .link { color: var(--color-accent-deep); font: 500 var(--text-sm)/1 var(--font-display); text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--color-accent) 40%, transparent); text-underline-offset: 0.22em; white-space: nowrap; }
+  .link:hover { text-decoration-color: var(--color-accent); }
+  .link:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; border-radius: 2px; }
+
+  .screen { display: grid; gap: var(--space-xl); padding-block: var(--space-xl) var(--space-3xl); }
+  .screen h1 { font-size: var(--text-2xl); max-width: none; }
+  .screen__intro { display: grid; gap: var(--space-sm); }
+  .screen__intro p { color: var(--color-ink-2); max-width: 70ch; }
+  pre, code { font-family: var(--font-outlier); }
+  :not(pre) > code { padding: 0.06em 0.3em; border-radius: 4px; background: var(--color-paper-3); font-size: 0.88em; overflow-wrap: anywhere; }
+
+  .panel { border: var(--rule-hair) solid var(--color-rule); border-radius: var(--radius-card); background: var(--color-paper); box-shadow: var(--shadow-card); }
+  .panel__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-md); padding: var(--space-sm) var(--space-md); border-bottom: var(--rule-hair) solid var(--color-rule); }
+  .panel__head h2 { font: 600 var(--text-md)/1.3 var(--font-display); letter-spacing: 0; max-width: none; }
+  .panel__head p { font-size: var(--text-sm); color: var(--color-muted); }
+  .panel--current { border-color: var(--color-accent); }
+  .panel--current .panel__head { background: var(--color-accent-wash); }
+
+  .bundles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md); }
+  .total { padding: var(--space-md); font: 600 var(--text-2xl)/1 var(--font-display); letter-spacing: var(--tracking-display); font-variant-numeric: tabular-nums; }
+  .total small { display: block; margin-top: var(--space-2xs); font: 400 var(--text-sm)/1.3 var(--font-body); letter-spacing: 0; color: var(--color-muted); }
+  .note-line { font-size: var(--text-sm); color: var(--color-muted); }
+
+  .table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+  .table th, .table td { padding: var(--space-xs) var(--space-md); border-bottom: var(--rule-hair) solid var(--color-rule); text-align: left; }
+  .table tr:last-child td { border-bottom: 0; }
+  .table thead th { font: 500 var(--text-sm)/1.3 var(--font-display); color: var(--color-muted); white-space: nowrap; }
+  .table .mono { font-family: var(--font-outlier); overflow-wrap: anywhere; }
+  .table .num { text-align: right; font-family: var(--font-outlier); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .table .muted { color: var(--color-muted); }
+  .table tfoot td { border-top: var(--rule-hair) solid var(--color-ink); border-bottom: 0; font-weight: 500; }
+
+  .row-action { min-height: 32px; padding: 0 var(--space-xs); border: 0; border-radius: 4px; background: transparent; color: var(--color-muted); font: 500 var(--text-sm)/1 var(--font-display); cursor: pointer; transition: color var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out); }
+  .row-action::after { content: ""; position: absolute; inset: -6px 0; }
+  .row-action { position: relative; }
+  .row-action:hover { color: var(--color-error); background: var(--color-paper-2); }
+  .row-action:active { transform: translateY(1px); }
+  .row-action:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+  .row-action:disabled { opacity: 0.55; cursor: not-allowed; }
+  .empty { padding: var(--space-lg) var(--space-md); color: var(--color-muted); }
+
+  .screen > * { min-width: 0; }
+  .screen > section { display: grid; gap: var(--space-sm); align-content: start; }
+  .screen > section.panel { display: block; }
+  @media (max-width: 40rem) {
+    .bar__name { font-size: var(--text-sm); }
+    .bundles { grid-template-columns: minmax(0, 1fr); }
+  }
 }

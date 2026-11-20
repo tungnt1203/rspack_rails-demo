@@ -23,8 +23,8 @@ export default class extends Controller<HTMLElement> {
   connect(): void {
     consumer ??= createConsumer()
     this.subscription = consumer.subscriptions.create("MetricsChannel", {
-      connected: () => this.setStatus("connected", "bg-emerald-500"),
-      disconnected: () => this.setStatus("disconnected", "bg-slate-400"),
+      connected: () => this.setStatus("connected", "is-on"),
+      disconnected: () => this.setStatus("disconnected", ""),
       received: (data: Metrics) => this.update(data),
     })
   }
@@ -34,7 +34,7 @@ export default class extends Controller<HTMLElement> {
   }
 
   private setStatus(text: string, color: string): void {
-    this.statusTarget.innerHTML = `<span class="inline-block h-2 w-2 rounded-full ${color}"></span> ${text}`
+    this.statusTarget.innerHTML = `<span class="dot ${color}"></span> ${text}`
   }
 
   private update(data: Metrics): void {

@@ -1,6 +1,9 @@
 // The "admin" entry (layouts/admin.html.erb). Only what this page needs:
 // a table of the files the browser downloaded, from the Resource Timing API.
-import "@fontsource-variable/inter"
+import "@fontsource-variable/familjen-grotesk"
+import "@fontsource/ibm-plex-sans/400.css"
+import "@fontsource/ibm-plex-sans/500.css"
+import "@fontsource-variable/jetbrains-mono"
 
 const kb = (bytes: number) => (bytes ? `${(bytes / 1024).toFixed(1)} KB` : "cached")
 
@@ -17,12 +20,12 @@ const render = () => {
       const row = document.createElement("tr")
       const name = new URL(entry.name).pathname.split("/").pop() || "(this page)"
       for (const [text, align] of [
-        [name, "text-left text-zinc-300"],
-        [kb(entry.transferSize), "text-right"],
-        [String(Math.round(entry.duration)), "text-right text-zinc-500"],
+        [name, "mono"],
+        [kb(entry.transferSize), "num"],
+        [String(Math.round(entry.duration)), "num muted"],
       ]) {
         const cell = document.createElement("td")
-        cell.className = `py-0.5 ${align}`
+        cell.className = align
         cell.textContent = text
         row.append(cell)
       }

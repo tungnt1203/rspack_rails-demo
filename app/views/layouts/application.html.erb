@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <title><%= content_for(:title) || "Rspack Demo" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="A Rails 8.1 app bundled by rspack_rails: React, Stimulus, lazy chunks, a Web Worker and Turbo Streams, each running live.">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Rspack Demo">
     <meta name="mobile-web-app-capable" content="yes">
@@ -23,19 +24,30 @@
     <%= rspack_stylesheet_tag "application", "data-turbo-track": "reload" %>
   </head>
 
-  <body class="min-h-screen bg-slate-50 text-slate-900 antialiased">
-    <header class="border-b border-slate-200 bg-white">
-      <nav class="mx-auto flex max-w-4xl items-center justify-between px-4 py-4">
-        <%= link_to "rspack_rails demo", root_path, class: "font-semibold" %>
-        <div class="flex gap-4 text-sm text-slate-600">
-          <%= link_to "Demo", root_path, class: "hover:text-orange-600" %>
-          <%= link_to "How it works", how_path, class: "hover:text-orange-600" %>
-          <%= link_to "Admin", admin_path, class: "hover:text-orange-600" %>
-        </div>
-      </nav>
+  <body>
+    <a class="skip visually-hidden" href="#main">Skip to the page</a>
+    <header class="site-nav">
+      <div class="container site-nav__bar">
+        <%= link_to "rspack_rails demo", root_path, class: "wordmark", "aria-label": "rspack_rails demo, home" %>
+        <nav aria-label="Site" class="nav-links">
+          <%= link_to "Demo", root_path, class: "hide-narrow", "aria-current": (current_page?(root_path) ? "page" : nil) %>
+          <%= link_to "How it works", how_path, "aria-current": (current_page?(how_path) ? "page" : nil) %>
+          <%= link_to "Admin", admin_path %>
+        </nav>
+      </div>
     </header>
-    <main class="mx-auto max-w-4xl px-4 py-10">
+    <main id="main">
       <%= yield %>
     </main>
+    <footer class="site-footer">
+      <div class="container site-footer__grid">
+        <p><strong>rspack_rails demo.</strong> Rails <%= Rails.version %> with rspack_rails <%= RspackRails::VERSION %>, deployed with Kamal. Every widget on these pages runs from the bundles Rspack built.</p>
+        <nav aria-label="Footer" class="nav-links">
+          <%= link_to "Demo", root_path %>
+          <%= link_to "How it works", how_path %>
+          <%= link_to "Admin", admin_path %>
+        </nav>
+      </div>
+    </footer>
   </body>
 </html>

@@ -1,166 +1,212 @@
 <% content_for :title, "rspack_rails demo" %>
 
-<section class="mb-10">
-  <p class="text-sm font-medium text-orange-600">Rails <%= Rails.version %> · rspack_rails <%= RspackRails::VERSION %></p>
-  <h1 class="mt-2 text-4xl font-bold tracking-tight">Bundled by Rspack, served by Rails</h1>
-  <p class="mt-3 max-w-2xl text-slate-600">
-    Everything interactive on this page comes from one entry, <code class="rounded bg-slate-100 px-1">app/javascript/application.js</code>,
-    built by Rspack into <code class="rounded bg-slate-100 px-1">app/assets/builds</code> and served through the asset pipeline.
-  </p>
+<section class="hero" aria-labelledby="hero-title">
+  <div class="container hero__grid">
+    <div class="hero__text">
+      <h1 id="hero-title">Bundled by Rspack, served by Rails</h1>
+      <p class="lead">Every widget below comes from one entry, built by Rspack and served by the asset pipeline.</p>
+    </div>
+
+    <div class="hero__panel">
+      <section class="manifest" aria-labelledby="helpers-title">
+        <div class="manifest__head">
+          <h2 id="helpers-title">What the helpers linked</h2>
+          <p><code>rspack_javascript_tag "application"</code> and <code>rspack_stylesheet_tag "application"</code> read Rspack's manifest <%= @dev_server ? "(from the dev server, which is running)" : "(from the last build)" %>:</p>
+        </div>
+        <dl>
+          <dt>entry</dt><dd>app/javascript/application.js</dd>
+          <dt>scripts</dt><dd class="is-live"><%= @entry.scripts.map { |file| @dev_server ? "/rspack/#{file}" : asset_path(file) }.join(", ") %></dd>
+          <dt>stylesheets</dt><dd class="is-live"><%= @entry.stylesheets.map { |file| @dev_server ? "/rspack/#{file}" : asset_path(file) }.join(", ") %></dd>
+          <dt>built into</dt><dd>app/assets/builds</dd>
+          <dt>Rails</dt><dd><%= Rails.version %></dd>
+          <dt>rspack_rails</dt><dd><%= RspackRails::VERSION %></dd>
+        </dl>
+      </section>
+    </div>
+  </div>
 </section>
 
-<div class="grid gap-6 md:grid-cols-2">
-  <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-    <h2 class="mb-4 text-lg font-semibold">React component</h2>
-    <%= react_component "Playground", owner: "Your" %>
-  </section>
+<section class="group" aria-labelledby="g-components">
+  <div class="container">
+    <div class="group__head">
+      <h2 id="g-components">React and Stimulus</h2>
+    </div>
+    <div class="blocks">
+      <section class="block cut col-span-7">
+        <h3>React component</h3>
+        <div class="well grow"><%= react_component "Playground", owner: "Your" %></div>
+        <p class="block__file"><code>app/javascript/components/Playground.tsx</code></p>
+      </section>
 
-  <div class="space-y-6">
-    <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 class="text-lg font-semibold">Stimulus controller</h2>
-      <p class="mt-1 text-sm text-slate-600">A TypeScript controller, registered automatically. Server time was <%= Time.current.strftime("%H:%M:%S") %>; the browser says:</p>
-      <p data-controller="clock" class="mt-3 font-mono text-3xl text-orange-600">--:--:--</p>
+      <div class="stack col-span-5">
+        <section class="block cut">
+          <h3>Stimulus controller</h3>
+          <p class="block__line">A TypeScript controller, registered automatically. Server time was <%= Time.current.strftime("%H:%M:%S") %>; the browser says:</p>
+          <p data-controller="clock" class="clock">--:--:--</p>
+          <p class="block__file"><code>controllers/clock_controller.ts</code></p>
+        </section>
+
+        <section data-controller="sortable" class="block cut">
+          <h3>SortableJS</h3>
+          <p class="block__line">Drag to rank. Order: <span data-sortable-target="output" class="font-medium text-accent-deep"></span></p>
+          <ul data-sortable-target="list" class="rank">
+            <% %w[Rspack esbuild Vite webpack].each do |name| %>
+              <li data-name="<%= name %>"><%= name %></li>
+            <% end %>
+          </ul>
+          <p class="block__file"><code>controllers/sortable_controller.ts</code></p>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="group group--alt" aria-labelledby="g-chunks">
+  <div class="container">
+    <div class="group__head">
+      <h2 id="g-chunks">Lazy chunks</h2>
+      <p>None of these are in the first download.</p>
+    </div>
+    <div class="blocks">
+      <section class="block cut col-span-8">
+        <h3>Leaflet map</h3>
+        <p class="block__line">Leaflet's JS and CSS (with its marker images) load in their own lazy chunks.</p>
+        <div data-controller="map"
+             data-map-places-value="<%= [["Hồ Gươm, Hà Nội", 21.0287, 105.8524], ["Chợ Bến Thành, TP.HCM", 10.7725, 106.698], ["Cầu Rồng, Đà Nẵng", 16.0612, 108.2272]].to_json %>"
+             class="map-frame grow"></div>
+        <p class="block__file"><code>controllers/map_controller.ts</code></p>
+      </section>
+
+      <div class="stack col-span-4">
+        <section data-controller="lazy" class="block cut">
+          <h3>Lazy chunk</h3>
+          <p class="block__line">Not part of the first download. Pressing the button fetches it.</p>
+          <div><button type="button" data-action="lazy#load" class="key">Load sparkline</button></div>
+          <div data-lazy-target="output"></div>
+          <p data-lazy-target="status" class="status"></p>
+          <p class="block__file"><code>controllers/lazy_controller.ts</code></p>
+        </section>
+
+        <section data-controller="chart" class="block cut">
+          <h3>Chart.js, on demand</h3>
+          <p class="block__line">About 200 KB that the page does not download until you ask.</p>
+          <div><button type="button" data-chart-target="button" data-action="chart#show" class="key">Show chart</button></div>
+          <canvas data-chart-target="canvas"></canvas>
+          <p class="block__file"><code>controllers/chart_controller.ts</code></p>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="group" aria-labelledby="g-styles">
+  <div class="container">
+    <div class="group__head">
+      <h2 id="g-styles">Styles and assets</h2>
+    </div>
+    <div class="blocks">
+      <section class="block cut col-span-6">
+        <h3>CSS Modules and Sass</h3>
+        <p class="block__line">A React component styled by <code>ThemeSwatches.module.scss</code> (Sass loops and math) and <code>Badge.module.css</code>. Class names are scoped per file.</p>
+        <div class="well"><%= react_component "ThemeSwatches" %></div>
+        <p class="block__file"><code>components/ThemeSwatches.tsx</code></p>
+      </section>
+
+      <section data-controller="assets" class="block cut col-span-6">
+        <h3>Images and fonts</h3>
+        <p class="block__line">Imported from TypeScript and CSS. Above 8 KB a file is emitted with a hash; below, it is inlined.</p>
+        <img data-assets-target="hero" alt="" class="shot">
+        <dl class="facts">
+          <dt>hero.jpg</dt><dd data-assets-target="heroUrl" class="truncate"></dd>
+          <dt class="flex items-center gap-2"><img data-assets-target="bolt" alt="" class="size-4"> bolt.svg</dt><dd data-assets-target="boltUrl" class="truncate"></dd>
+        </dl>
+        <div class="bg-grid font-sample">
+          <p class="f-display">Familjen Grotesk for heads</p>
+          <p>IBM Plex Sans for reading</p>
+          <p class="f-mono">JetBrains Mono for code, all three from Fontsource, on a grid.svg background set in CSS</p>
+        </div>
+        <p class="block__file"><code>controllers/assets_controller.ts</code></p>
+      </section>
+    </div>
+  </div>
+</section>
+
+<section class="group group--alt" aria-labelledby="g-turbo">
+  <div class="container">
+    <div class="group__head">
+      <h2 id="g-turbo">Turbo and Action Cable</h2>
+      <p>Open this page in a second tab to watch the notes arrive.</p>
+    </div>
+    <div class="blocks">
+      <section id="live-notes" class="block cut col-span-7">
+        <h3>Turbo Streams over Action Cable</h3>
+        <p class="block__line">
+          Posting answers with a Turbo Stream, and every other tab on this page gets the same note through
+          <code>turbo_stream_from "notes"</code>.
+        </p>
+        <%= turbo_stream_from "notes" %>
+        <%= render "notes/form", note: Note.new %>
+        <ul id="notes" class="notes-list">
+          <%= render @notes %>
+        </ul>
+        <p class="block__file"><code>notes_controller.rb</code> and <code>models/note.rb</code></p>
+      </section>
+
+      <div class="stack col-span-5">
+        <section data-controller="live" class="block cut">
+          <div class="block__top">
+            <h3>Live from the server</h3>
+            <span data-live-target="status" class="live-state"><span class="dot is-wait"></span> connecting</span>
+          </div>
+          <p class="block__line">A custom Action Cable channel pushes these numbers every second.</p>
+          <svg viewBox="0 0 100 30" preserveAspectRatio="none" class="meter" aria-hidden="true">
+            <polyline data-live-target="line" stroke-width="0.8" vector-effect="non-scaling-stroke" points=""></polyline>
+          </svg>
+          <dl class="facts">
+            <dt>server time</dt><dd data-live-target="at">–</dd>
+            <dt>memory (RSS)</dt><dd data-live-target="rss">–</dd>
+            <dt>threads</dt><dd data-live-target="threads">–</dd>
+            <dt>cable clients</dt><dd data-live-target="connections">–</dd>
+            <dt>notes</dt><dd data-live-target="notes">–</dd>
+          </dl>
+          <p class="block__file"><code>channels/metrics_channel.rb</code></p>
+        </section>
+
+        <section class="block cut">
+          <h3>Turbo Frame, loaded lazily</h3>
+          <p class="block__line">Fetched from <code>/stats</code> when it scrolls into view. The link inside reloads only the frame.</p>
+          <%= turbo_frame_tag "server_stats", src: stats_path, loading: :lazy do %>
+            <p class="status">Loading…</p>
+          <% end %>
+          <p class="block__file"><code>pages/stats.html.erb</code></p>
+        </section>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="group" aria-labelledby="g-worker">
+  <div class="container">
+    <div class="group__head">
+      <h2 id="g-worker">Web Worker</h2>
+      <p>Thirty million random samples, filtered into a histogram. The bar below moves with <code>requestAnimationFrame</code>: it keeps going while the worker runs, and freezes on the main thread.</p>
+    </div>
+    <section data-controller="worker" class="block cut" aria-label="Histogram">
+      <div class="ticker">
+        <div data-worker-target="ticker" class="ticker__dot"></div>
+      </div>
+      <div class="controls">
+        <button type="button" data-action="worker#runInWorker" class="key key--primary">Run in a worker</button>
+        <button type="button" data-action="worker#runOnMainThread" class="key">Run on the main thread</button>
+        <label>
+          Keep
+          <input data-worker-target="limit" data-action="change->worker#limitChanged" type="range" min="0.5" max="4" step="0.5" value="3" class="range">
+          <span data-worker-target="limitLabel" class="w-12 font-[family-name:var(--font-outlier)]"></span>
+        </label>
+      </div>
+      <div data-worker-target="chart" class="histogram well">Press a button</div>
+      <p data-worker-target="status" class="status"></p>
+      <p class="block__file"><code>controllers/worker_controller.ts</code> and <code>workers/histogram.worker.ts</code></p>
     </section>
-
-    <section data-controller="lazy" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 class="text-lg font-semibold">Lazy chunk</h2>
-      <p class="mt-1 text-sm text-slate-600">Not part of the first download. Pressing the button fetches it.</p>
-      <button data-action="lazy#load" class="mt-3 rounded-lg border border-orange-500 px-4 py-2 text-sm font-medium text-orange-600 hover:bg-orange-50">
-        Load sparkline
-      </button>
-      <div data-lazy-target="output" class="mt-3"></div>
-      <p data-lazy-target="status" class="mt-1 font-mono text-xs text-slate-500"></p>
-    </section>
   </div>
-</div>
-
-<div class="mt-6 grid gap-6 md:grid-cols-2">
-  <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-    <h2 class="text-lg font-semibold">Leaflet map</h2>
-    <p class="mt-1 text-sm text-slate-600">Leaflet's JS and CSS (with its marker images) load in their own lazy chunks.</p>
-    <div data-controller="map"
-         data-map-places-value="<%= [["Hồ Gươm, Hà Nội", 21.0287, 105.8524], ["Chợ Bến Thành, TP.HCM", 10.7725, 106.698], ["Cầu Rồng, Đà Nẵng", 16.0612, 108.2272]].to_json %>"
-         class="mt-4 h-64 rounded-lg bg-slate-100"></div>
-  </section>
-
-  <section data-controller="chart" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-    <h2 class="text-lg font-semibold">Chart.js, on demand</h2>
-    <p class="mt-1 text-sm text-slate-600">About 200 KB that the page does not download until you ask.</p>
-    <button data-chart-target="button" data-action="chart#show"
-            class="mt-3 rounded-lg border border-orange-500 px-4 py-2 text-sm font-medium text-orange-600 hover:bg-orange-50 disabled:opacity-60">
-      Show chart
-    </button>
-    <canvas data-chart-target="canvas" class="mt-3"></canvas>
-  </section>
-</div>
-
-<section data-controller="sortable" class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-  <h2 class="text-lg font-semibold">SortableJS</h2>
-  <p class="mt-1 text-sm text-slate-600">Drag to rank. Order: <span data-sortable-target="output" class="font-medium text-orange-600"></span></p>
-  <ul data-sortable-target="list" class="mt-4 grid gap-2 sm:grid-cols-4">
-    <% %w[Rspack esbuild Vite webpack].each do |name| %>
-      <li data-name="<%= name %>" class="cursor-grab rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium active:cursor-grabbing"><%= name %></li>
-    <% end %>
-  </ul>
-</section>
-
-<div class="mt-6 grid gap-6 md:grid-cols-2">
-  <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-    <h2 class="text-lg font-semibold">CSS Modules and Sass</h2>
-    <p class="mt-1 text-sm text-slate-600">A React component styled by <code class="rounded bg-slate-100 px-1">ThemeSwatches.module.scss</code> (Sass loops and color functions) and <code class="rounded bg-slate-100 px-1">Badge.module.css</code>. Class names are scoped per file.</p>
-    <div class="mt-4"><%= react_component "ThemeSwatches" %></div>
-  </section>
-
-  <section data-controller="assets" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-    <h2 class="text-lg font-semibold">Images and fonts</h2>
-    <p class="mt-1 text-sm text-slate-600">Imported from TypeScript and CSS. Above 8 KB a file is emitted with a hash; below, it is inlined.</p>
-    <img data-assets-target="hero" alt="" class="mt-4 h-24 w-full rounded-lg object-cover">
-    <dl class="mt-3 grid grid-cols-[5rem_1fr] items-center gap-x-3 gap-y-1 font-mono text-xs">
-      <dt class="text-slate-500">hero.jpg</dt><dd data-assets-target="heroUrl" class="truncate"></dd>
-      <dt class="flex items-center gap-1 text-slate-500"><img data-assets-target="bolt" alt="" class="h-4 w-4"> bolt.svg</dt><dd data-assets-target="boltUrl" class="truncate"></dd>
-    </dl>
-    <div class="bg-grid mt-3 rounded-lg border border-orange-100 p-3 font-mono text-sm">
-      JetBrains Mono, from <span class="text-orange-600">@fontsource-variable</span>, on a grid.svg background set in CSS
-    </div>
-  </section>
-</div>
-
-<section id="live-notes" class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-  <h2 class="text-lg font-semibold">Turbo Streams over Action Cable</h2>
-  <p class="mt-1 text-sm text-slate-600">
-    Posting answers with a Turbo Stream, and every other tab on this page gets the same note through
-    <code class="rounded bg-slate-100 px-1">turbo_stream_from "notes"</code>. Open a second tab to see it.
-  </p>
-  <%= turbo_stream_from "notes" %>
-  <div class="mt-4"><%= render "notes/form", note: Note.new %></div>
-  <ul id="notes" class="mt-3 max-h-72 divide-y divide-slate-100 overflow-y-auto rounded-lg border border-slate-200">
-    <%= render @notes %>
-  </ul>
-</section>
-
-<div class="mt-6 grid gap-6 md:grid-cols-2">
-  <section data-controller="live" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-    <div class="flex items-center justify-between">
-      <h2 class="text-lg font-semibold">Live from the server</h2>
-      <span data-live-target="status" class="flex items-center gap-1.5 text-xs text-slate-500"><span class="inline-block h-2 w-2 rounded-full bg-amber-400"></span> connecting</span>
-    </div>
-    <p class="mt-1 text-sm text-slate-600">A custom Action Cable channel pushes these numbers every second.</p>
-    <svg viewBox="0 0 100 30" preserveAspectRatio="none" class="mt-3 h-16 w-full rounded bg-orange-50">
-      <polyline data-live-target="line" fill="none" stroke="#f97316" stroke-width="0.8" vector-effect="non-scaling-stroke" points=""></polyline>
-    </svg>
-    <dl class="mt-3 grid grid-cols-2 gap-x-4 gap-y-1 font-mono text-sm">
-      <dt class="text-slate-500">server time</dt><dd data-live-target="at">–</dd>
-      <dt class="text-slate-500">memory (RSS)</dt><dd data-live-target="rss">–</dd>
-      <dt class="text-slate-500">threads</dt><dd data-live-target="threads">–</dd>
-      <dt class="text-slate-500">cable clients</dt><dd data-live-target="connections">–</dd>
-      <dt class="text-slate-500">notes</dt><dd data-live-target="notes">–</dd>
-    </dl>
-  </section>
-
-  <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-    <h2 class="text-lg font-semibold">Turbo Frame, loaded lazily</h2>
-    <p class="mt-1 text-sm text-slate-600">Fetched from <code class="rounded bg-slate-100 px-1">/stats</code> when it scrolls into view. The link inside reloads only the frame.</p>
-    <div class="mt-4">
-      <%= turbo_frame_tag "server_stats", src: stats_path, loading: :lazy do %>
-        <p class="text-sm text-slate-400">Loading…</p>
-      <% end %>
-    </div>
-  </section>
-</div>
-
-<section data-controller="worker" class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-  <h2 class="text-lg font-semibold">Web Worker</h2>
-  <p class="mt-1 text-sm text-slate-600">
-    Thirty million random samples, filtered into a histogram. The bar below moves with
-    <code class="rounded bg-slate-100 px-1">requestAnimationFrame</code>: it keeps going while the worker runs, and freezes on the main thread.
-  </p>
-  <div class="relative mt-4 h-2 rounded-full bg-slate-100">
-    <div data-worker-target="ticker" class="absolute top-0 h-2 w-6 rounded-full bg-orange-500"></div>
-  </div>
-  <div class="mt-4 flex flex-wrap items-center gap-3">
-    <button data-action="worker#runInWorker" class="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600">Run in a worker</button>
-    <button data-action="worker#runOnMainThread" class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">Run on the main thread</button>
-    <label class="flex items-center gap-2 text-sm text-slate-600">
-      Keep
-      <input data-worker-target="limit" data-action="change->worker#limitChanged" type="range" min="0.5" max="4" step="0.5" value="3">
-      <span data-worker-target="limitLabel" class="w-12 font-mono"></span>
-    </label>
-  </div>
-  <div data-worker-target="chart" class="mt-4 flex h-32 items-center justify-center rounded-lg bg-slate-50 text-sm text-slate-400">Press a button</div>
-  <p data-worker-target="status" class="mt-2 font-mono text-xs text-slate-500"></p>
-</section>
-
-<section class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-  <h2 class="text-lg font-semibold">What the helpers linked</h2>
-  <p class="mt-1 text-sm text-slate-600">
-    <code class="rounded bg-slate-100 px-1">rspack_javascript_tag "application"</code> and
-    <code class="rounded bg-slate-100 px-1">rspack_stylesheet_tag "application"</code> read Rspack's manifest
-    <%= @dev_server ? "(from the dev server, which is running)" : "(from the last build)" %>:
-  </p>
-  <dl class="mt-4 grid gap-2 font-mono text-sm sm:grid-cols-[8rem_1fr]">
-    <dt class="text-slate-500">scripts</dt>
-    <dd><%= @entry.scripts.map { |file| @dev_server ? "/rspack/#{file}" : asset_path(file) }.join(", ") %></dd>
-    <dt class="text-slate-500">stylesheets</dt>
-    <dd><%= @entry.stylesheets.map { |file| @dev_server ? "/rspack/#{file}" : asset_path(file) }.join(", ") %></dd>
-  </dl>
 </section>

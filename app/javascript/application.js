@@ -1,4 +1,6 @@
-import "@fontsource-variable/inter"
+import "@fontsource-variable/familjen-grotesk"
+import "@fontsource/ibm-plex-sans/400.css"
+import "@fontsource/ibm-plex-sans/500.css"
 import "@fontsource-variable/jetbrains-mono"
 import "./application.css"
 import "./application.scss"

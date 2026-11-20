@@ -24,7 +24,7 @@ export default function ThemeSwatches() {
           />
         ))}
       </div>
-      <p className="text-sm text-slate-600">
+      <p className="text-sm text-ink-2">
         Selected button's classes:{" "}
         <span className={badge.badge}>
           <code>{swatchClass(selected)}</code>

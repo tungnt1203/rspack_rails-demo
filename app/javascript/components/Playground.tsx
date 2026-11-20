@@ -33,16 +33,16 @@ export default function Playground({ owner }: Props) {
     <div className="space-y-4">
       <div className="flex items-center gap-3">
         <img src={boltUrl} alt="" className="h-10 w-10" />
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-ink-2">
           {owner} list, rendered by React. Icons from lucide-react, dates from date-fns (vi locale).
         </p>
       </div>
-      <p className="flex items-center gap-2 text-xs text-slate-500">
+      <p className="flex items-center gap-2 text-sm text-muted">
         <ListTodo className="h-4 w-4" />
         {format(new Date(), "EEEE, d MMMM yyyy", { locale: vi })}
       </p>
       <form
-        className="flex gap-2"
+        className="note-form"
         onSubmit={(event) => {
           event.preventDefault()
           add()
@@ -52,25 +52,26 @@ export default function Playground({ owner }: Props) {
           value={draft}
           onChange={(event) => setDraft(event.target.value)}
           placeholder="Add an item"
-          className="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-orange-500 focus:outline-none"
+          className="input flex-1"
+          aria-label="New item"
         />
-        <button className="flex items-center gap-1 rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600">
+        <button className="key key--primary">
           <Plus className="h-4 w-4" /> Add
         </button>
       </form>
-      <ul className="divide-y divide-slate-100 rounded-lg border border-slate-200">
+      <ul className="notes-list">
         {items.map((item, index) => (
-          <li key={`${item.text}-${index}`} className="flex items-center justify-between gap-3 px-3 py-2 text-sm">
-            <span>
+          <li key={`${item.text}-${index}`} className="note">
+            <span className="note__body">
               {item.text}
-              <span className="ml-2 text-xs text-slate-400">
+              <span className="ml-2 text-sm text-muted">
                 {formatDistanceToNow(item.addedAt, { addSuffix: true, locale: vi })}
               </span>
             </span>
             <button
               type="button"
               onClick={() => setItems(items.filter((_, i) => i !== index))}
-              className="text-slate-400 hover:text-red-500"
+              className="key--quiet"
               aria-label={`Remove ${item.text}`}
             >
               <Trash2 className="h-4 w-4" />
@@ -78,7 +79,7 @@ export default function Playground({ owner }: Props) {
           </li>
         ))}
       </ul>
-      <p className="text-xs text-slate-500">{items.length} items</p>
+      <p className="text-sm text-muted">{items.length} items</p>
     </div>
   )
 }
