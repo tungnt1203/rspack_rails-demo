@@ -1,3 +1,4 @@
+import "@fontsource-variable/inter"
 import "./application.css"
 import "@hotwired/turbo-rails"
 import "./controllers/autoload"

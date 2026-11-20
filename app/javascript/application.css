@@ -6,3 +6,8 @@
 @source not "../../log";
 @source not "../../storage";
 @source not "../assets/builds";
+
+/* Inter, from @fontsource-variable/inter (imported in application.js). */
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+}

@@ -34,6 +34,36 @@
   </div>
 </div>
 
+<div class="mt-6 grid gap-6 md:grid-cols-2">
+  <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <h2 class="text-lg font-semibold">Leaflet map</h2>
+    <p class="mt-1 text-sm text-slate-600">Leaflet's JS and CSS (with its marker images) load in their own lazy chunks.</p>
+    <div data-controller="map"
+         data-map-places-value="<%= [["Hồ Gươm, Hà Nội", 21.0287, 105.8524], ["Chợ Bến Thành, TP.HCM", 10.7725, 106.698], ["Cầu Rồng, Đà Nẵng", 16.0612, 108.2272]].to_json %>"
+         class="mt-4 h-64 rounded-lg bg-slate-100"></div>
+  </section>
+
+  <section data-controller="chart" class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <h2 class="text-lg font-semibold">Chart.js, on demand</h2>
+    <p class="mt-1 text-sm text-slate-600">About 200 KB that the page does not download until you ask.</p>
+    <button data-chart-target="button" data-action="chart#show"
+            class="mt-3 rounded-lg border border-orange-500 px-4 py-2 text-sm font-medium text-orange-600 hover:bg-orange-50 disabled:opacity-60">
+      Show chart
+    </button>
+    <canvas data-chart-target="canvas" class="mt-3"></canvas>
+  </section>
+</div>
+
+<section data-controller="sortable" class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+  <h2 class="text-lg font-semibold">SortableJS</h2>
+  <p class="mt-1 text-sm text-slate-600">Drag to rank. Order: <span data-sortable-target="output" class="font-medium text-orange-600"></span></p>
+  <ul data-sortable-target="list" class="mt-4 grid gap-2 sm:grid-cols-4">
+    <% %w[Rspack esbuild Vite webpack].each do |name| %>
+      <li data-name="<%= name %>" class="cursor-grab rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium active:cursor-grabbing"><%= name %></li>
+    <% end %>
+  </ul>
+</section>
+
 <section class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
   <h2 class="text-lg font-semibold">What the helpers linked</h2>
   <p class="mt-1 text-sm text-slate-600">

@@ -16,17 +16,25 @@
     "@rspack/dev-server": "^2.2.2",
     "@rspack/plugin-react-refresh": "^2.0.3",
     "@tailwindcss/webpack": "^4.3.5",
+    "@types/leaflet": "^1.9.22",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "@types/sortablejs": "^1.15.9",
     "react-refresh": "^0.19.0",
     "tailwindcss": "^4.3.5",
     "ts-checker-rspack-plugin": "^1.8.0",
     "typescript": "^7.0.2"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.23",
+    "chart.js": "^4.6.1",
+    "date-fns": "^4.4.0",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^1.76.0",
     "react": "^19.3.1",
-    "react-dom": "^19.3.1"
+    "react-dom": "^19.3.1",
+    "sortablejs": "^1.15.7"
   }
 }
