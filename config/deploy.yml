@@ -7,7 +7,7 @@ image: rspack_demo
 # Deploy to these servers.
 servers:
   web:
-    - 192.168.0.1
+    - 52.65.113.251
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -20,9 +20,10 @@ servers:
 #
 # Don't use this when deploying to multiple web servers (then you have to terminate SSL at your load balancer).
 #
-# proxy:
-#   ssl: true
-#   host: app.example.com
+proxy:
+  ssl: true
+  # sslip.io resolves to the IP in the name, so Let's Encrypt can issue a certificate without a domain.
+  host: 52-65-113-251.sslip.io
 
 # Where you keep your container images.
 registry:
@@ -91,8 +92,11 @@ builder:
   #   - RAILS_MASTER_KEY
 
 # Use a different ssh user than root
-# ssh:
-#   user: app
+ssh:
+  user: ec2-user
+  keys_only: true
+  keys:
+    - ~/Downloads/tungnguyenthanh.pem
 
 # Use accessory services (secrets come from .kamal/secrets).
 # accessories:
