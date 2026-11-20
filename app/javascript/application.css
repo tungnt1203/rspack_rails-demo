@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+/* Not scanned for class names. Tailwind skips what .gitignore lists, but a
+   Docker build has no .gitignore. */
+@source not "../../tmp";
+@source not "../../log";
+@source not "../../storage";
+@source not "../assets/builds";

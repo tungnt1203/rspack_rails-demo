@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "@rspack/core/module"
+    ],
+    "strict": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "paths": {
+      "#/*": [
+        "./app/javascript/*"
+      ]
+    },
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "app/javascript/**/*.ts",
+    "app/javascript/**/*.tsx"
+  ]
+}
